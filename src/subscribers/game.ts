@@ -2,12 +2,14 @@ import { EventEmitter, type EventHandlerMap } from "@/utils/EventEmitter";
 
 interface GameEvents extends EventHandlerMap {
   connected: () => void;
+  disconnected: () => void;
 }
 
 const EventTypes: {
   [G in keyof GameEvents]: G;
 } = {
   connected: "connected",
+  disconnected: "disconnected",
 } as const;
 
 type GameEvent = keyof GameEvents;
@@ -26,6 +28,9 @@ export class GameSubscription extends EventEmitter<GameEvents> {
     );
     this.webSocket.addEventListener("open", () => {
       this.emit("connected");
+    });
+    this.webSocket.addEventListener("close", () => {
+      this.emit("disconnected");
     });
     this.webSocket.addEventListener(
       "message",

@@ -28,6 +28,9 @@ export function useGame(gameId: string): UseGameHookReturns {
         gameSubscription.on("connected", () => {
           setConnectionState("CONNECTED");
         });
+        gameSubscription.on("disconnected", () => {
+          setConnectionState("DISCONNECTED");
+        });
       })
       .catch((err) => {
         console.warn("GetTokenFail", err);
