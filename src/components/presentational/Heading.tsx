@@ -19,13 +19,13 @@ const StyledHeading = styled.div<HeadingProps>`
 `;
 
 // Heading functional component
-const Heading: React.FC<HeadingProps> = ({
+export function Heading({
   $level = 1,
   $color,
   $fontSize,
   $alignment = "left",
   children,
-}) => {
+}: HeadingProps) {
   const HeadingTag = `h${$level}`;
 
   return (
@@ -38,6 +38,4 @@ const Heading: React.FC<HeadingProps> = ({
       {children}
     </StyledHeading>
   );
-};
-
-export default Heading;
+}

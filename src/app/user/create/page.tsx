@@ -11,7 +11,7 @@ import {
   selectSessionUser,
   setName,
 } from "@/store/slices/sessionUser";
-import Heading from "@/components/presentational/Heading";
+import { Heading } from "@/components/presentational/Heading";
 import { Button } from "@/components/presentational/form/button";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";

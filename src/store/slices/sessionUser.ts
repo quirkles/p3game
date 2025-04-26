@@ -4,14 +4,11 @@ import { saveUser } from "@/firestore/queries/user";
 import { RootState } from "@/store/store";
 
 export interface SessionUserState {
-  name: string | null;
-  id: string | null;
+  name?: string;
+  id?: string;
 }
 
-const initialState: SessionUserState = {
-  name: null,
-  id: null,
-};
+const initialState: SessionUserState = {};
 
 export const saveUserThunk = createAsyncThunk(
   "sessionUser/persistUserInFirestore",

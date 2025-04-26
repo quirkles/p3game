@@ -19,10 +19,17 @@ const isEventType = (event: unknown): event is GameEvent => {
 };
 
 export class GameSubscription extends EventEmitter<GameEvents> {
-  private webSocket: WebSocket;
+  private webSocket: WebSocket | null = null;
 
   constructor(gameId: string, connectionToken: string) {
     super();
+    this.subscribe(gameId, connectionToken);
+  }
+
+  subscribe(gameId: string, connectionToken: string): void {
+    if (this.webSocket) {
+      return;
+    }
     this.webSocket = new WebSocket(
       `ws://localhost:8080/ws?gameId=${gameId}&connectionToken=${connectionToken}`,
     );
@@ -52,7 +59,16 @@ export class GameSubscription extends EventEmitter<GameEvents> {
   }
 
   unsubscribe(): void {
-    this.webSocket.close();
+    if (this.webSocket) {
+      if (this.webSocket.readyState === WebSocket.OPEN) {
+        this.webSocket.close();
+      }
+      if (this.webSocket.readyState === WebSocket.CONNECTING) {
+        this.webSocket.addEventListener("open", () => {
+          this.webSocket?.close();
+        });
+      }
+    }
   }
 }
 export function getGameSubscription(

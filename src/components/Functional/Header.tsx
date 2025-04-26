@@ -3,7 +3,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import Heading from "@/components/presentational/Heading";
+import { Heading } from "@/components/presentational/Heading";
 import { selectSessionUser } from "@/store/slices/sessionUser";
 import { getColor } from "@/styles/colors";
 
@@ -24,7 +24,6 @@ const UserInfo = styled.div`
 export function Header() {
   // Access the session user from the Redux store
   const sessionUser = useSelector(selectSessionUser);
-
   return (
     <HeaderContainer>
       <Heading>My App</Heading>

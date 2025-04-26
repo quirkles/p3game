@@ -9,7 +9,7 @@ import { useGames } from "@/hooks/useGames";
 import { Input } from "@/components/presentational/form/input";
 import { Button } from "@/components/presentational/form/button";
 import Link from "next/link";
-import Heading from "@/components/presentational/Heading";
+import { Heading } from "@/components/presentational/Heading";
 import { useRouter } from "next/navigation";
 
 export default function UserInput() {

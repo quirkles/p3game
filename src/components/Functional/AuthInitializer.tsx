@@ -35,5 +35,3 @@ export function AuthInitializer({ children }: AuthInitializerProps) {
 
   return children;
 }
-
-export default AuthInitializer;

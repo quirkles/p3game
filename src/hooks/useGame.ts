@@ -1,5 +1,7 @@
+"use client";
+
 import { GameSubscription, getGameSubscription } from "@/subscribers/game";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "@/store/hooks";
 import { selectSessionUser } from "@/store/slices/sessionUser";
 
@@ -13,22 +15,25 @@ export function useGame(gameId: string): UseGameHookReturns {
   const [connectionState, setConnectionState] = useState<
     "ESTABLISHING_CONNECTION" | "CONNECTED" | "DISCONNECTED" | "ERROR"
   >("ESTABLISHING_CONNECTION");
-  const [gameSubscription, setGameSubscription] =
-    useState<GameSubscription | null>(null);
+  const gameSubscription = useRef<GameSubscription>(null);
 
   useEffect(() => {
-    if (!sessionUser.id) {
+    if (!sessionUser.id || !gameId) {
       return;
     }
+    let sub: GameSubscription | null = null;
     fetch(`http://localhost:8080/getToken?userId=${sessionUser.id}`)
       .then((resp) => resp.json())
       .then(({ token }) => {
-        const gameSubscription = getGameSubscription(gameId, token);
-        setGameSubscription(gameSubscription);
-        gameSubscription.on("connected", () => {
+        sub = getGameSubscription(gameId, token);
+        if (gameSubscription.current) {
+          gameSubscription.current.unsubscribe();
+        }
+        gameSubscription.current = sub;
+        sub.on("connected", () => {
           setConnectionState("CONNECTED");
         });
-        gameSubscription.on("disconnected", () => {
+        sub.on("disconnected", () => {
           setConnectionState("DISCONNECTED");
         });
       })
@@ -36,6 +41,9 @@ export function useGame(gameId: string): UseGameHookReturns {
         console.warn("GetTokenFail", err);
         setConnectionState("ERROR");
       });
+    return () => {
+      sub?.unsubscribe();
+    };
   }, [sessionUser.id, gameId]);
 
   if (!sessionUser.id) {
@@ -47,6 +55,6 @@ export function useGame(gameId: string): UseGameHookReturns {
 
   return {
     state: connectionState,
-    gameSubscription: gameSubscription,
+    gameSubscription: gameSubscription.current,
   };
 }
