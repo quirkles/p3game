@@ -5,7 +5,7 @@ import StoreProvider from "@/store/Provider";
 import { AuthInitializer } from "@/components/Functional/AuthInitializer";
 import { Header } from "@/components/Functional/Header";
 import StyledJsxRegistry from "@/styles/registry";
-import SlideOver from "@/components/presentational/layout/SlideOver";
+import { SlideOver } from "@/components/presentational/layout/SlideOver";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,9 +34,7 @@ export default function RootLayout({
           <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
               <Header />
-              <SlideOver position="left" tabContent=">">
-                Content
-              </SlideOver>
+              <SlideOver position="left">Content</SlideOver>
               <div className="main">{children}</div>
             </body>
           </html>
