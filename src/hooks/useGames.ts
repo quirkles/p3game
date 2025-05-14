@@ -9,8 +9,9 @@ import {
   where,
 } from "@firebase/firestore";
 import { firestoreDb } from "@/firestore/firestore";
-import { useAppSelector } from "@/store/hooks";
-import { selectSessionUser } from "@/store/slices/sessionUser";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setGameState } from "@/store/slices/games";
+import {selectSessionUser} from "@/store/selectors/sessionuser";
 
 interface HookReturns {
   createdGames: Game[];
@@ -20,6 +21,11 @@ interface HookReturns {
 export function useGames(): HookReturns {
   const [games, setGames] = useState<Record<string, Game>>({});
   const sessionUser = useAppSelector(selectSessionUser);
+  const appDispatch = useAppDispatch();
+
+  useEffect(() => {
+    appDispatch(setGameState(games));
+  }, [appDispatch, games]);
 
   useEffect(() => {
     const q = query(

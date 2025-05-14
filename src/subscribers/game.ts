@@ -1,18 +1,18 @@
-import { EventEmitter, type EventHandlerMap } from "@/utils/EventEmitter";
+import { EventEmitter, type EventHandlerArgsMap } from "@/utils/EventEmitter";
 
-interface GameEvents extends EventHandlerMap {
-  connected: () => void;
-  disconnected: () => void;
+interface GameEvents extends EventHandlerArgsMap {
+  connected: [];
+  disconnected: [];
 }
 
-const EventTypes: {
-  [G in keyof GameEvents]: G;
-} = {
+const EventTypes = {
   connected: "connected",
   disconnected: "disconnected",
-} as const;
+} as const satisfies {
+  [G in keyof GameEvents]: G;
+};
 
-type GameEvent = keyof GameEvents;
+type GameEvent = keyof typeof EventTypes;
 
 const isEventType = (event: unknown): event is GameEvent => {
   return typeof event === "string" && event in EventTypes;
@@ -42,7 +42,7 @@ export class GameSubscription extends EventEmitter<GameEvents> {
     this.webSocket.addEventListener(
       "message",
       <T extends GameEvent>(event: MessageEvent) => {
-        let parsed: { type: T; data: Parameters<GameEvents[T]> } | null = null;
+        let parsed: { type: T; data: GameEvents[T] } | null = null;
         try {
           parsed = JSON.parse(event.data);
         } catch (error) {

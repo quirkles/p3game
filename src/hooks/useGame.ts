@@ -46,13 +46,6 @@ export function useGame(gameId: string): UseGameHookReturns {
     };
   }, [sessionUser.id, gameId]);
 
-  if (!sessionUser.id) {
-    return {
-      state: "ERROR",
-      gameSubscription: null,
-    };
-  }
-
   return {
     state: connectionState,
     gameSubscription: gameSubscription.current,

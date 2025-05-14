@@ -2,10 +2,11 @@
 
 import { ReactNode, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { selectSessionUser, setUser } from "@/store/slices/sessionUser";
+import { setUser } from "@/store/slices/sessionUser";
 import { User } from "@/types/User";
 import { useAppSelector } from "@/store/hooks";
 import { useRouter, usePathname } from "next/navigation";
+import {selectSessionUser} from "@/store/selectors/sessionuser";
 
 interface AuthInitializerProps {
   children: ReactNode;

@@ -1,31 +1,60 @@
-export interface EventHandlerMap {
-  [key: string]: (
-    arg?: string | number | Record<string, string | number>,
-  ) => void;
-}
+type EventName = string;
+export type EventHandlerArgsMap = Record<EventName, readonly unknown[]>;
 
-export class EventEmitter<T extends EventHandlerMap> {
-  private readonly handlers: {
-    [EventName in keyof T]?: T[EventName][];
-  } = {};
+type Handlers<
+  Events extends EventHandlerArgsMap,
+  EventName extends keyof Events & string = keyof Events & string,
+> = {
+  [E in EventName]?: ((...args: Events[E]) => void)[];
+};
+
+export class EventEmitter<
+  Event_HandlerArgs_Map extends EventHandlerArgsMap,
+  EventName extends keyof Event_HandlerArgs_Map &
+    string = keyof Event_HandlerArgs_Map & string,
+> {
+  private readonly handlers: Handlers<Event_HandlerArgs_Map> = {};
 
   constructor() {}
 
-  emit<K extends keyof T>(event: K, ...value: Parameters<T[K]>): void {
-    this.handlers[event]?.forEach((h) => h(...value));
+  emit(
+    ...[event, ...values]: EventName extends keyof Event_HandlerArgs_Map
+      ? [EventName, ...Event_HandlerArgs_Map[EventName]]
+      : never
+  ): void {
+    this.handlers[event]?.forEach((h) => h(...values));
   }
 
-  on<EventName extends keyof T>(
-    event: EventName,
-    handler: T[EventName],
+  on(
+    ...[event, handler]: [
+      EventName,
+      (...args: Event_HandlerArgs_Map[EventName]) => void,
+    ]
   ): () => void {
     if (!this.handlers[event]) {
       this.handlers[event] = [handler];
     } else {
       this.handlers[event].push(handler);
     }
+    // Return the unsubscribe
     return () => {
       this.handlers[event] = this.handlers[event]?.filter((h) => h !== handler);
     };
+  }
+  registerHandlers(
+    handlers: Record<
+      EventName,
+      (...args: Event_HandlerArgs_Map[EventName]) => void
+    >,
+  ): () => void {
+    for (const eventName in handlers) {
+      this.on(
+        eventName as EventName,
+        handlers[eventName] as (
+          ...args: Event_HandlerArgs_Map[EventName]
+        ) => void,
+      );
+    }
+    return () => {};
   }
 }
