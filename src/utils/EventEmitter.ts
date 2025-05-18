@@ -1,11 +1,12 @@
-type EventName = string;
-export type EventHandlerArgsMap = Record<EventName, readonly unknown[]>;
+export type EventHandlerArgsMap = {
+  [eventName: string]: unknown;
+};
 
 type Handlers<
   Events extends EventHandlerArgsMap,
   EventName extends keyof Events & string = keyof Events & string,
 > = {
-  [E in EventName]?: ((...args: Events[E]) => void)[];
+  [E in EventName]?: ((payload: Events[E]) => void)[];
 };
 
 export class EventEmitter<
@@ -17,44 +18,59 @@ export class EventEmitter<
 
   constructor() {}
 
-  emit(
-    ...[event, ...values]: EventName extends keyof Event_HandlerArgs_Map
-      ? [EventName, ...Event_HandlerArgs_Map[EventName]]
-      : never
+  emit<T extends EventName>(
+    event: Event_HandlerArgs_Map[T] extends void ? T : never,
+  ): void;
+  emit<T extends EventName>(
+    event: Event_HandlerArgs_Map[T] extends void ? never : T,
+    payload: Event_HandlerArgs_Map[T] extends void
+      ? void
+      : Event_HandlerArgs_Map[T],
+  ): void;
+  emit<T extends EventName>(
+    event: Event_HandlerArgs_Map[T] extends void ? never : T,
+    payload?: Event_HandlerArgs_Map[T] extends void
+      ? void
+      : Event_HandlerArgs_Map[T],
   ): void {
-    this.handlers[event]?.forEach((h) => h(...values));
+    this.handlers[event]?.forEach((h) =>
+      h(
+        payload as Event_HandlerArgs_Map[Event_HandlerArgs_Map[T] extends void
+          ? never
+          : T],
+      ),
+    );
   }
 
-  on(
-    ...[event, handler]: [
-      EventName,
-      (...args: Event_HandlerArgs_Map[EventName]) => void,
-    ]
+  on<T extends EventName>(
+    event: T,
+    handler: (payload: Event_HandlerArgs_Map[T]) => void,
   ): () => void {
     if (!this.handlers[event]) {
       this.handlers[event] = [handler];
     } else {
       this.handlers[event].push(handler);
     }
-    // Return the unsubscribe
+    // Return the unsubscriber function
     return () => {
       this.handlers[event] = this.handlers[event]?.filter((h) => h !== handler);
     };
   }
-  registerHandlers(
-    handlers: Record<
-      EventName,
-      (...args: Event_HandlerArgs_Map[EventName]) => void
-    >,
-  ): () => void {
+  registerHandlers(handlers: {
+    [eventName in EventName]: (
+      payload: Event_HandlerArgs_Map[eventName],
+    ) => void;
+  }): () => void {
     for (const eventName in handlers) {
-      this.on(
-        eventName as EventName,
-        handlers[eventName] as (
-          ...args: Event_HandlerArgs_Map[EventName]
-        ) => void,
-      );
+      this.on(eventName, handlers[eventName]);
     }
     return () => {};
+  }
+  unsubscribeAll(): void {
+    Object.keys(this.handlers).forEach((key) => {
+      if (this.handlers[key]) {
+        this.handlers[key as keyof Handlers<Event_HandlerArgs_Map>] = [];
+      }
+    });
   }
 }

@@ -10,8 +10,9 @@ import {
 } from "@firebase/firestore";
 import { firestoreDb } from "@/firestore/firestore";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setGameState } from "@/store/slices/games";
-import {selectSessionUser} from "@/store/selectors/sessionuser";
+import { setManyGames } from "@/store/slices/games";
+import { selectSessionUser } from "@/store/selectors/sessionuser";
+import { values } from "@/utils/object";
 
 interface HookReturns {
   createdGames: Game[];
@@ -24,7 +25,7 @@ export function useGames(): HookReturns {
   const appDispatch = useAppDispatch();
 
   useEffect(() => {
-    appDispatch(setGameState(games));
+    appDispatch(setManyGames(values(games)));
   }, [appDispatch, games]);
 
   useEffect(() => {
@@ -65,7 +66,7 @@ export function useGames(): HookReturns {
       const gameRef = doc(collection(firestoreDb, "games"));
       const newDoc = {
         ...game,
-        status: "CREATED",
+        status: "NOT_STARTED",
         id: gameRef.id,
         createdBy: sessionUser.id,
       } as const;

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { Heading } from "@/components/presentational/Heading";
 import { getColor } from "@/styles/colors";
-import {selectSessionUser} from "@/store/selectors/sessionuser";
+import { selectSessionUser } from "@/store/selectors/sessionuser";
 
 const HeaderContainer = styled.header`
   display: flex;

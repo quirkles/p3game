@@ -1,13 +1,20 @@
 import { EventEmitter, type EventHandlerArgsMap } from "@/utils/EventEmitter";
+import { Game } from "@/types/Game";
 
 interface GameEvents extends EventHandlerArgsMap {
-  connected: [];
-  disconnected: [];
+  connected: void;
+  disconnected: void;
+  initGameData: Game;
+  playerJoined: string;
+  playerLeft: string;
 }
 
 const EventTypes = {
   connected: "connected",
   disconnected: "disconnected",
+  initGameData: "initGameData",
+  playerJoined: "playerJoined",
+  playerLeft: "playerLeft",
 } as const satisfies {
   [G in keyof GameEvents]: G;
 };
@@ -43,6 +50,7 @@ export class GameSubscription extends EventEmitter<GameEvents> {
       "message",
       <T extends GameEvent>(event: MessageEvent) => {
         let parsed: { type: T; data: GameEvents[T] } | null = null;
+        console.log("Message received:", event.data);
         try {
           parsed = JSON.parse(event.data);
         } catch (error) {
@@ -50,7 +58,10 @@ export class GameSubscription extends EventEmitter<GameEvents> {
         }
         if (parsed && isEventType(parsed.type)) {
           console.log("parsed message", parsed);
-          this.emit(parsed.type, ...parsed.data);
+          this.emit(
+            parsed.type as GameEvents[T] extends void ? never : T,
+            parsed.data as GameEvents[T] extends void ? void : GameEvents[T],
+          );
         } else {
           console.log("Invalid message received:", event.data);
         }
@@ -69,6 +80,7 @@ export class GameSubscription extends EventEmitter<GameEvents> {
         });
       }
     }
+    this.unsubscribeAll();
   }
 }
 export function getGameSubscription(

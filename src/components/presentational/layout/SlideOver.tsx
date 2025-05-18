@@ -2,8 +2,7 @@
 
 import { PropsWithChildren, useState } from "react";
 import styled from "styled-components";
-import { FlexContainer } from "@/components/presentational/layout/FlexContainer";
-import { StyledSpacer } from "@/components/presentational/layout/Spacer";
+import { Spacer } from "@/components/presentational/layout/Spacer";
 import { getColor } from "@/styles/colors";
 
 const StyledSlideOver = styled.div<{
@@ -65,7 +64,7 @@ export function SlideOver({
   const [isOpen, setIsOpen] = useState(false);
   return (
     <StyledSlideOver $isOpen={isOpen} $position={position}>
-      <StyledSpacer padding="2rem">{children}</StyledSpacer>
+      <Spacer $padding="2rem">{children}</Spacer>
       <div className="show-hide-toggle" onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? "<" : ">"}
       </div>

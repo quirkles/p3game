@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from "@/types/User";
 import { saveUser } from "@/firestore/queries/user";
-import { RootState } from "@/store/store";
 
 export interface SessionUserState {
   name?: string;
