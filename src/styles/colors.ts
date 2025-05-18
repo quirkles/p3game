@@ -14,11 +14,11 @@ export const colors = {
 export type Color = keyof typeof colors;
 
 export const greys = {
-  dark: "#222222",
-  light: "#444444",
-  lighter: "#666666",
-  lightest: "#bbbbbb",
-  almostWhite: "#f0f0f0",
+  grey5: "#6a6a6a",
+  grey4: "#8a8a8a",
+  grey3: "#bababa",
+  grey2: "#cbcbcb",
+  grey1: "#f0f0f0",
 } as const;
 
 export type Grey = keyof typeof greys;

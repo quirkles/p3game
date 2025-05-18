@@ -11,7 +11,7 @@ export function ActiveGame() {
   if (!activeGame || !isFetchedStoreGame(activeGame)) return null;
 
   return (
-    <FlexContainer $flexDirection="column" $gap="2rem">
+    <FlexContainer $flexDirection="column" $gap="1rem">
       <Heading $level={2}>Active Game</Heading>
       <RecordTable
         data={{

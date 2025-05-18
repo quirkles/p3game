@@ -7,13 +7,18 @@ interface TableProps<T extends Record<string, string | number>> {
 }
 
 const StyledTable = styled.table`
-    tbody {
-      tr {
-        background-color: ${getColor("white")};
-        &:nth-child(even) {
-        background-color: ${getColor("almostWhite")};
-      }
+  border-collapse: collapse;
+  tbody {
+  }
+  tr {
+    td {
+      padding: 0.25rem;
     }
+    background-color: ${getColor("grey2")};
+    &:nth-child(even) {
+      background-color: ${getColor("grey1")};
+    }
+  }
 `;
 
 export function RecordTable<T extends Record<string, string | number>>(
