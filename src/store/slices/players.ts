@@ -1,6 +1,10 @@
 import { User } from "@/types/User";
 import { createSlice } from "@reduxjs/toolkit";
-import { addPlayersToGame, removePlayersFromGame } from "@/store/slices/games";
+import {
+  addPlayersToGame,
+  removePlayersFromGame,
+  setGame,
+} from "@/store/slices/games";
 import { PendingEntity } from "@/store/types";
 import { fetchMany } from "@/store/thunks/players";
 
@@ -21,6 +25,14 @@ const playersSlice = createSlice({
   reducers: {},
   initialState,
   extraReducers: (builder) => {
+    builder.addCase(setGame, (state, action) => {
+      const creator = state.players[action.payload.createdBy] || {
+        id: action.payload.createdBy,
+        status: "PENDING",
+      };
+      state.players[action.payload.createdBy] = creator;
+      return state;
+    });
     builder.addCase(addPlayersToGame, (state, action) => {
       action.payload.playerIds.forEach((playerId) => {
         state.players[playerId] = {
