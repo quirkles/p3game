@@ -4,12 +4,12 @@ import { useState } from "react";
 import {
   FlexChild,
   FlexContainer,
-} from "@/components/presentational/layout/FlexContainer";
+} from "@/components/Presentational/layout/FlexContainer";
 import { useGames } from "@/hooks/useGames";
-import { Input } from "@/components/presentational/form/input";
-import { Button } from "@/components/presentational/form/button";
+import { Input } from "@/components/Presentational/form/input";
+import { Button } from "@/components/Presentational/form/button";
 import Link from "next/link";
-import { Heading } from "@/components/presentational/Heading";
+import { Heading } from "@/components/Presentational/Heading";
 import { useRouter } from "next/navigation";
 
 export default function UserInput() {

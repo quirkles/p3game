@@ -14,13 +14,17 @@ import {
 import { useSelector } from "react-redux";
 import { selectPlayersToFetch } from "@/store/selectors/players";
 import { fetchMany } from "@/store/thunks/players";
+import { getConfig } from "@/config";
 
 interface UseGameHookReturns {
   state: "ESTABLISHING_CONNECTION" | "CONNECTED" | "DISCONNECTED" | "ERROR";
   gameSubscription: GameSubscription | null;
 }
 
-export function useGame(gameId: string): UseGameHookReturns {
+export function useGame(
+  gameId: string,
+  userIdOverride?: string,
+): UseGameHookReturns {
   const hookTicks = useRef(0);
   const sessionUser = useAppSelector(selectSessionUser);
 
@@ -34,6 +38,9 @@ export function useGame(gameId: string): UseGameHookReturns {
 
   const gameSubscription = useRef<GameSubscription>(null);
 
+  const userId =
+    (getConfig().ENV === "local" && userIdOverride) || sessionUser.id;
+
   useEffect(() => {
     hookTicks.current++;
     if (hookTicks.current > 5) {
@@ -45,11 +52,11 @@ export function useGame(gameId: string): UseGameHookReturns {
   }, [appDispatch, playersToFetch, playersToFetch.length]);
 
   useEffect(() => {
-    if (!sessionUser.id || !gameId) {
+    if (!userId || !gameId) {
       return;
     }
     let sub: GameSubscription | null = null;
-    fetch(`http://localhost:8080/getToken?userId=${sessionUser.id}`)
+    fetch(`http://localhost:8080/getToken?userId=${userId}`)
       .then((resp) => resp.json())
       .then(({ token }) => {
         sub = getGameSubscription(gameId, token);
@@ -92,7 +99,7 @@ export function useGame(gameId: string): UseGameHookReturns {
     return () => {
       sub?.unsubscribe();
     };
-  }, [sessionUser.id, gameId, appDispatch]);
+  }, [userId, gameId, appDispatch]);
 
   return {
     state: connectionState,

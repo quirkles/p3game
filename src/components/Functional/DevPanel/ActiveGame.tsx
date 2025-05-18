@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { selectActiveGame } from "@/store/selectors/games";
-import { FlexContainer } from "@/components/presentational/layout/FlexContainer";
-import { Heading } from "@/components/presentational/Heading";
+import { FlexContainer } from "@/components/Presentational/layout/FlexContainer";
+import { Heading } from "@/components/Presentational/Heading";
 
 export function ActiveGame() {
   const activeGame = useSelector(selectActiveGame);

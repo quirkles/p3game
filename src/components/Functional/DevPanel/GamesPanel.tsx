@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 import { selectGames } from "@/store/selectors/games";
-import { FlexContainer } from "@/components/presentational/layout/FlexContainer";
+import { FlexContainer } from "@/components/Presentational/layout/FlexContainer";
 import { values } from "@/utils/object";
 import { sortByKey } from "@/utils/array";
-import { Heading } from "@/components/presentational/Heading";
+import { Heading } from "@/components/Presentational/Heading";
 
 // interface GamesPanelProps {}
 

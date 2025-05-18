@@ -2,6 +2,11 @@
 
 import { use, useEffect } from "react";
 import { useGame } from "@/hooks/useGame";
+import { useSelector } from "react-redux";
+import { selectGame } from "@/store/selectors/games";
+import { Spinner } from "@/components/Presentational/Spinner";
+import { FlexContainer } from "@/components/Presentational/layout/FlexContainer";
+import {Spacer} from "@/components/Presentational/layout/Spacer";
 
 export default function GamePage({
   params,
@@ -10,6 +15,7 @@ export default function GamePage({
 }) {
   const { gameId } = use(params);
   const { state, gameSubscription } = useGame(gameId);
+  const game = useSelector(selectGame(gameId));
   useEffect(() => {
     if (gameSubscription) {
       const unsub = gameSubscription.on("connected", () => {
@@ -20,9 +26,29 @@ export default function GamePage({
       };
     }
   }, [gameSubscription]);
+
+  if (
+    !game ||
+    game.status === "PENDING" ||
+    game.status === "FETCHING" ||
+    state === "ESTABLISHING_CONNECTION"
+  ) {
+    return (
+      <FlexContainer
+        $alignItems="center"
+        $justifyContent="center"
+        $gap="1rem"
+        $flexDirection="column"
+      >
+        <Spacer $paddingY="2rem">
+          <Spinner />
+        </Spacer>
+      </FlexContainer>
+    );
+  }
   return (
     <div className="game-page">
-      <h1>Game Page for {gameId}</h1>
+      <h1></h1>
       <h2>State: {state}</h2>
       {/* Add game-specific content here */}
     </div>

@@ -3,16 +3,16 @@
 import {
   FlexChild,
   FlexContainer,
-} from "@/components/presentational/layout/FlexContainer";
-import { Input } from "@/components/presentational/form/input";
+} from "@/components/Presentational/layout/FlexContainer";
+import { Input } from "@/components/Presentational/form/input";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   saveUserThunk,
   selectSessionUser,
   setName,
 } from "@/store/slices/sessionUser";
-import { Heading } from "@/components/presentational/Heading";
-import { Button } from "@/components/presentational/form/button";
+import { Heading } from "@/components/Presentational/Heading";
+import { Button } from "@/components/Presentational/form/button";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
