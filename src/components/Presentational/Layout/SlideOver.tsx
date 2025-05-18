@@ -2,7 +2,7 @@
 
 import { PropsWithChildren, useState } from "react";
 import styled from "styled-components";
-import { Spacer } from "@/components/Presentational/layout/Spacer";
+import { Spacer } from "@/components/Presentational/Layout/Spacer";
 import { getColor } from "@/styles/colors";
 
 const StyledSlideOver = styled.div<{

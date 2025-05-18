@@ -5,8 +5,8 @@ import { useGame } from "@/hooks/useGame";
 import { useSelector } from "react-redux";
 import { selectGame } from "@/store/selectors/games";
 import { Spinner } from "@/components/Presentational/Spinner";
-import { FlexContainer } from "@/components/Presentational/layout/FlexContainer";
-import {Spacer} from "@/components/Presentational/layout/Spacer";
+import { FlexContainer } from "@/components/Presentational/Layout/FlexContainer";
+import {Spacer} from "@/components/Presentational/Layout/Spacer";
 
 export default function GamePage({
   params,

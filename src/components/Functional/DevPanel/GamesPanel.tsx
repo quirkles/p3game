@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { selectGames } from "@/store/selectors/games";
-import { FlexContainer } from "@/components/Presentational/layout/FlexContainer";
+import { FlexContainer } from "@/components/Presentational/Layout/FlexContainer";
 import { values } from "@/utils/object";
 import { sortByKey } from "@/utils/array";
 import { Heading } from "@/components/Presentational/Heading";

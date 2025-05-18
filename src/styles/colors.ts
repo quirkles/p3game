@@ -13,8 +13,22 @@ export const colors = {
 
 export type Color = keyof typeof colors;
 
+export const greys = {
+  dark: "#222222",
+  light: "#444444",
+  lighter: "#666666",
+  lightest: "#bbbbbb",
+  almostWhite: "#f0f0f0",
+} as const;
+
+export type Grey = keyof typeof greys;
+
 export function isColor(color: string): color is Color {
   return color in colors;
+}
+
+export function isGrey(color: string): color is Grey {
+  return color in greys;
 }
 
 // Export aliases for commonly used color contexts
@@ -32,12 +46,14 @@ export function isColorAlias(color: string): color is ColorAlias {
   return color in colorAliases;
 }
 
-export type ColorName = Color | ColorAlias;
+export type ColorName = Color | ColorAlias | Grey;
 export type ColorCode<T extends ColorName> = T extends Color
   ? (typeof colors)[T]
   : T extends ColorAlias
     ? (typeof colorAliases)[T]
-    : never;
+    : T extends Grey
+      ? (typeof greys)[T]
+      : never;
 
 export function getColor<T extends ColorName>(colorName: T): ColorCode<T> {
   if (isColor(colorName)) {
@@ -45,6 +61,9 @@ export function getColor<T extends ColorName>(colorName: T): ColorCode<T> {
   }
   if (isColorAlias(colorName)) {
     return colorAliases[colorName] as ColorCode<T>;
+  }
+  if (isGrey(colorName)) {
+    return greys[colorName] as ColorCode<T>;
   }
   throw new Error(`Invalid color name: ${colorName}`);
 }

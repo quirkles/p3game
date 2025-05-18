@@ -4,10 +4,10 @@ import { useState } from "react";
 import {
   FlexChild,
   FlexContainer,
-} from "@/components/Presentational/layout/FlexContainer";
+} from "@/components/Presentational/Layout/FlexContainer";
 import { useGames } from "@/hooks/useGames";
-import { Input } from "@/components/Presentational/form/input";
-import { Button } from "@/components/Presentational/form/button";
+import { Input } from "@/components/Presentational/Form/input";
+import { Button } from "@/components/Presentational/Form/button";
 import Link from "next/link";
 import { Heading } from "@/components/Presentational/Heading";
 import { useRouter } from "next/navigation";

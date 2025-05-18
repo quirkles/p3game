@@ -5,7 +5,7 @@ import StoreProvider from "@/store/Provider";
 import { AuthInitializer } from "@/components/Functional/AuthInitializer";
 import { Header } from "@/components/Functional/Header";
 import StyledJsxRegistry from "@/styles/registry";
-import { SlideOver } from "@/components/Presentational/layout/SlideOver";
+import { SlideOver } from "@/components/Presentational/Layout/SlideOver";
 import { DevPanel } from "@/components/Functional/DevPanel/DevPanel";
 
 const geistSans = Geist({

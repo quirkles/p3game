@@ -2,13 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import { Game } from "@/types/Game";
 import { unique } from "@/utils/array";
 import { values } from "@/utils/object";
-import { PendingEntity } from "@/store/types";
+import {StoreGame} from "@/store/types";
 
 export interface GamesState {
   games: {
-    [gameId: string]: (Game | PendingEntity) & {
-      players: string[];
-    };
+    [gameId: string]: StoreGame;
   };
   activeGameConnection: string | null;
 }

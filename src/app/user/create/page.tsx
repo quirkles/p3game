@@ -3,8 +3,8 @@
 import {
   FlexChild,
   FlexContainer,
-} from "@/components/Presentational/layout/FlexContainer";
-import { Input } from "@/components/Presentational/form/input";
+} from "@/components/Presentational/Layout/FlexContainer";
+import { Input } from "@/components/Presentational/Form/input";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   saveUserThunk,
@@ -12,7 +12,7 @@ import {
   setName,
 } from "@/store/slices/sessionUser";
 import { Heading } from "@/components/Presentational/Heading";
-import { Button } from "@/components/Presentational/form/button";
+import { Button } from "@/components/Presentational/Form/button";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
