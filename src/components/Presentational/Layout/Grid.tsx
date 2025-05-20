@@ -14,9 +14,9 @@ export const GridContainer = styled.div<{
   display: grid;
   grid-template-columns: repeat(
     ${({ $columns = 12 }) => $columns},
-    minmax(100px, 1fr)
+    minmax(min-content, 1fr)
   );
-  grid-template-rows: repeat(auto-fill, minmax(100px, 1fr));
+  grid-template-rows: 1fr;
   //width: 100%;
   grid-gap: ${(props) => gaps[props.$gap || "small"]};
   grid-auto-flow: dense;

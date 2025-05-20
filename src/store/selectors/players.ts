@@ -9,6 +9,12 @@ export const selectPlayers = createSelector(
   (players) => players.players,
 );
 
+export const selectPlayersByIds = createSelector(
+  selectPlayers,
+  (_root: RootState, playerIds: string[]) => playerIds,
+  (players, playerIds) => playerIds.map((playerId) => players[playerId]),
+);
+
 export const selectPlayersToFetch = createSelector(selectPlayers, (players) =>
   filterMapReduceValues(players, {
     filter: (player) => "status" in player && player.status === "PENDING",

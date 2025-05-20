@@ -8,10 +8,13 @@ import {
 } from "@/styles/colors";
 
 // Create a type that ensures only one of the props is provided (not both)
-type ButtonColorProps =
+type ButtonColorProps = {
+  $size?: "small" | "medium" | "large";
+} & (
   | { color: ColorName; variant?: never }
   | { color?: never; variant: ColorName }
-  | { color?: never; variant?: never }; // Allow both to be omitted for default
+  | { color?: never; variant?: never }
+); // Allow both to be omitted for default
 
 export const Button = styled.button<ButtonColorProps>`
   ${({ color, variant }) => {
@@ -34,8 +37,28 @@ export const Button = styled.button<ButtonColorProps>`
     `;
   }}
 
-  font-size: 16px;
-  padding: 10px 20px;
+  font-size: ${({ $size }) => {
+    switch ($size) {
+      case "small":
+        return "12px";
+      case "large":
+        return "20px";
+      case "medium":
+      default:
+        return "16px";
+    }
+  }};
+  padding: ${({ $size }) => {
+    switch ($size) {
+      case "small":
+        return "4px 10px";
+      case "large":
+        return "10px 25px";
+      case "medium":
+      default:
+        return "6px 15px";
+    }
+  }};
   border: none;
   border-radius: 5px;
   cursor: pointer;

@@ -8,14 +8,20 @@ type HeadingProps = PropsWithChildren<{
   $color?: string; // Text color
   $fontSize?: string; // Font size
   $alignment?: "left" | "center" | "right"; // Text alignment
+  $fontWeight?: "normal" | "bold";
+  $textTransform?: "uppercase" | "lowercase" | "capitalize";
+  $textDecoration?: "underline" | "line-through" | "none";
 }>;
 
 // Define a styled component that adapts to its props
 const StyledHeading = styled.div<HeadingProps>`
-  color: ${({ color }) => color || "inherit"};
-  font-size: ${({ $fontSize }) => $fontSize || "inherit"};
+  color: ${({ color }) => color};
+  font-size: ${({ $fontSize }) => $fontSize};
   text-align: ${({ $alignment }) => $alignment || "left"};
   margin: 0;
+  font-weight: ${({ $fontWeight }) => $fontWeight};
+  text-transform: ${({ $textTransform }) => $textTransform};
+  text-decoration: ${({ $textDecoration }) => $textDecoration};
 `;
 
 // Heading functional component
@@ -24,6 +30,9 @@ export function Heading({
   $color,
   $fontSize,
   $alignment = "left",
+  $textTransform,
+  $textDecoration,
+  $fontWeight,
   children,
 }: HeadingProps) {
   const HeadingTag = `h${$level}`;
@@ -34,6 +43,9 @@ export function Heading({
       $color={$color}
       $fontSize={$fontSize}
       $alignment={$alignment}
+      $textTransform={$textTransform}
+      $textDecoration={$textDecoration}
+      $fontWeight={$fontWeight}
     >
       {children}
     </StyledHeading>

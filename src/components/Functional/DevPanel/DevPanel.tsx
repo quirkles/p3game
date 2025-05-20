@@ -2,8 +2,8 @@
 
 import { Spacer } from "@/components/Presentational/Layout/Spacer";
 import { GamesPanel } from "@/components/Functional/DevPanel/GamesPanel";
-import { ActiveGame } from "@/components/Functional/DevPanel/ActiveGame";
 import { FlexContainer } from "@/components/Presentational/Layout/FlexContainer";
+import { ActiveGame } from "@/components/Functional/DevPanel/ActiveGame/ActiveGame";
 
 export function DevPanel() {
   return (

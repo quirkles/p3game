@@ -8,11 +8,13 @@ import {
 import { PendingEntity } from "@/store/types";
 import { fetchMany } from "@/store/thunks/players";
 
+export type StorePlayer = (User | PendingEntity) & {
+  game: string | null;
+};
+
 export interface PlayersState {
   players: {
-    [playerId: string]: (User | PendingEntity) & {
-      game: string | null;
-    };
+    [playerId: string]: StorePlayer;
   };
 }
 
