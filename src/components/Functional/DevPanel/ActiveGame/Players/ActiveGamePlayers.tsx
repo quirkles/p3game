@@ -5,6 +5,7 @@ import { List } from "@/components/Presentational/List/List";
 import { StorePlayer } from "@/store/slices/players";
 import { Modal } from "@/components/Presentational/Modal/Modal";
 import { useState } from "react";
+import { AddPlayerForm } from "@/components/Functional/DevPanel/ActiveGame/Players/AddPlayerForm";
 
 interface ActiveGamePlayersProps {
   players: StorePlayer[];
@@ -36,7 +37,7 @@ export function ActiveGamePlayers({ players }: ActiveGamePlayersProps) {
         title="Add Player"
         handleClose={() => setIsShowingAddPlayerModal(false)}
       >
-        add the player here
+        <AddPlayerForm />
       </Modal>
     </FlexContainer>
   );
