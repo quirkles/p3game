@@ -32,12 +32,22 @@ export function AddPlayerForm() {
 
   return (
     <FlexContainer>
-      <GridContainer $columns={2}>
+      <GridContainer $columns={2} $gap="medium">
         <GridItem>
-          <TextField label="name" register={register} required />
+          <TextField
+            label="name"
+            register={register}
+            required
+            error={errors.name?.message}
+          />
         </GridItem>
         <GridItem>
-          <TextField label="email" register={register} required />
+          <TextField
+            label="email"
+            register={register}
+            required
+            error={errors.email?.message}
+          />
         </GridItem>
         <Button onClick={handleSubmit(doSubmit)}>Add</Button>
       </GridContainer>

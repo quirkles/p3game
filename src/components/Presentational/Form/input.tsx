@@ -1,10 +1,14 @@
 import styled from "styled-components";
+import { getColor } from "@/styles/colors";
 
-export const Input = styled.input`
+export const Input = styled.input<{
+  $hasError?: boolean;
+}>`
   padding: 12px 16px;
   font-size: 14px;
-  color: #fff;
-  border: 1px solid #ccc;
+  background-color: ${getColor("white")};
+  color: ${getColor("black")};
+  border: 1px solid ${({ $hasError }) => getColor($hasError ? "red" : "grey1")};
   border-radius: 4px;
   outline: none;
   width: 100%;
@@ -18,14 +22,13 @@ export const Input = styled.input`
   }
 
   &:focus {
-    border-color: #0077ff;
-    box-shadow: 0 0 4px rgba(0, 119, 255, 0.5);
+    border-color: ${getColor("blue")};
   }
 
   &:disabled {
-    background-color: #f9f9f9;
-    border-color: #e0e0e0;
+    background-color: ${getColor("grey2")};
+    border-color: ${getColor("grey4")};
     cursor: not-allowed;
-    color: #a0a0a0;
+    color: ${getColor("black")};
   }
 `;
