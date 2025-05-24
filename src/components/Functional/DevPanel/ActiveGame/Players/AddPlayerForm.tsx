@@ -24,8 +24,6 @@ export function AddPlayerForm() {
     resolver: zodResolver(addPlayerFormSchema),
   });
 
-  console.log("errors", errors);
-
   const doSubmit = (data: z.infer<typeof addPlayerFormSchema>) => {
     console.log("Submit Data", data);
   };

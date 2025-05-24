@@ -23,7 +23,7 @@ export function ActiveGame() {
   return (
     <FlexContainer $flexDirection="column" $gap="1rem">
       <Heading $level={2}>Active Game</Heading>
-      <GridContainer $columns={6} $gap="medium">
+      <GridContainer $columns={6} $gap="large">
         <GridItem $xsCol={6} $smCol={2}>
           <RecordTable
             data={{

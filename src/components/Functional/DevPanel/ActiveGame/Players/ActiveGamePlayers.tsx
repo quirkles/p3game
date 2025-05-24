@@ -6,6 +6,8 @@ import { StorePlayer } from "@/store/slices/players";
 import { Modal } from "@/components/Presentational/Modal/Modal";
 import { useState } from "react";
 import { AddPlayerForm } from "@/components/Functional/DevPanel/ActiveGame/Players/AddPlayerForm";
+import { Tabs } from "@/components/Presentational/Tabs";
+import { ExistingPlayers } from "@/components/Functional/DevPanel/ActiveGame/Players/ExistingPlayers";
 
 interface ActiveGamePlayersProps {
   players: StorePlayer[];
@@ -37,7 +39,20 @@ export function ActiveGamePlayers({ players }: ActiveGamePlayersProps) {
         title="Add Player"
         handleClose={() => setIsShowingAddPlayerModal(false)}
       >
-        <AddPlayerForm />
+        <Tabs
+          tabs={[
+            {
+              tabId: "createForm",
+              label: "Create New Player",
+              content: <AddPlayerForm />,
+            },
+            {
+              tabId: "existing",
+              label: "Add Existing Player",
+              content: <ExistingPlayers />,
+            },
+          ]}
+        />
       </Modal>
     </FlexContainer>
   );

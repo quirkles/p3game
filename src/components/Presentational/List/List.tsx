@@ -3,6 +3,11 @@ import { noop } from "@/utils/func";
 
 const StyledList = styled.ul`
   list-style: none;
+  padding: 0;
+  margin: 0;
+  li {
+    padding: 0.5rem 0;
+  }
 `;
 
 interface ListProps {

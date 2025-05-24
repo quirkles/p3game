@@ -8,8 +8,9 @@ export const Input = styled.input<{
   font-size: 14px;
   background-color: ${getColor("white")};
   color: ${getColor("black")};
-  border: 1px solid ${({ $hasError }) => getColor($hasError ? "red" : "grey1")};
-  border-radius: 4px;
+  border: none;
+  border-bottom: 2px solid
+    ${({ $hasError }) => getColor($hasError ? "red" : "grey1")};
   outline: none;
   width: 100%;
   box-sizing: border-box;

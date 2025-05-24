@@ -1,22 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import StoreProvider from "@/store/Provider";
 import { AuthInitializer } from "@/components/Functional/AuthInitializer";
 import { Header } from "@/components/Functional/Header";
 import StyledJsxRegistry from "@/styles/registry";
 import { SlideOver } from "@/components/Presentational/Layout/SlideOver";
 import { DevPanel } from "@/components/Functional/DevPanel/DevPanel";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { Html } from "@/app/globalStyles";
+import { cormorant, karla } from "@/styles/fonts";
 
 export const metadata: Metadata = {
   title: "Games Day!",
@@ -32,15 +22,15 @@ export default function RootLayout({
     <StoreProvider>
       <AuthInitializer>
         <StyledJsxRegistry>
-          <html lang="en">
-            <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <Html lang="en">
+            <body className={`${cormorant.className} ${karla.className}`}>
               <Header />
               <SlideOver position="left">
                 <DevPanel />
               </SlideOver>
               <div className="main">{children}</div>
             </body>
-          </html>
+          </Html>
         </StyledJsxRegistry>
       </AuthInitializer>
     </StoreProvider>

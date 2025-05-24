@@ -12,6 +12,10 @@ export const selectGames = createSelector(
   (games) => games.games,
 );
 
+export const selectNonPendingGames = createSelector(selectGames, (games) =>
+  Object.values(games).filter((game) => "name" in game),
+);
+
 export const selectGame = (gameId: string) =>
   createSelector(selectGames, (games) => games[gameId]);
 

@@ -1,14 +1,14 @@
 export type HexString = `#${string}`;
 
 export const colors = {
-  red: "#ff595e",
-  blue: "#1982c4",
-  green: "#8ac926",
-  orange: "#E67E22",
-  yellow: "#ffca3a",
-  purple: "#6a4c93",
-  black: "#000000",
-  white: "#FFFFFF",
+  red: "#E63946",
+  blue: "#457B9D",
+  green: "#A1C181",
+  orange: "#FAA916",
+  yellow: "#FCCA46",
+  purple: "#564256",
+  black: "#242423",
+  white: "#FEFFFE",
 } as const;
 
 export type Color = keyof typeof colors;

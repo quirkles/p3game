@@ -2,7 +2,6 @@ import type { FieldValues, Path, UseFormRegister } from "react-hook-form";
 import { FlexContainer } from "@/components/Presentational/Layout/FlexContainer";
 import { Input } from "@/components/Presentational/Form/input";
 import { nanoid } from "nanoid";
-import { ErrorList } from "@/components/Presentational/Form/ErrorList";
 import { Span } from "@/components/Presentational/Typography/Span";
 import styled from "styled-components";
 import { getColor } from "@/styles/colors";
