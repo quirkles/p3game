@@ -56,7 +56,7 @@ export function ExistingPlayers({ onPlayerClick }: ExistingPlayersProps) {
             }))}
           />
         ) : (
-          <P>{query.length ? "No Players Found." : "Search for players."}</P>
+          <P>{query?.length ? "No Players Found." : "Search for players."}</P>
         )}
       </FlexChild>
     </StyledExistingPlayers>

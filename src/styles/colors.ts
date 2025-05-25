@@ -3,6 +3,7 @@ export type HexString = `#${string}`;
 export const colors = {
   red: "#E63946",
   blue: "#457B9D",
+  lightBlue: "#bcd3e2",
   green: "#A1C181",
   orange: "#FAA916",
   yellow: "#FCCA46",
@@ -90,47 +91,26 @@ export function getFontColor<T extends ColorName>(colorName: T): HexString {
   }
 }
 
-const darkenMemo = new Map<HexString, HexString>();
-export const darkenColor = (hex: HexString, amount: number): HexString => {
-  if (darkenMemo.has(hex)) {
-    return darkenMemo.get(hex)!;
-  }
-  const hexTail = hex.replace("#", "");
-  const r = Math.max(0, parseInt(hexTail.slice(0, 2), 16) - amount)
-    .toString(16)
-    .padStart(2, "0");
-  const g = Math.max(0, parseInt(hexTail.slice(2, 4), 16) - amount)
-    .toString(16)
-    .padStart(2, "0");
-  const b = Math.max(0, parseInt(hexTail.slice(4, 6), 16) - amount)
-    .toString(16)
-    .padStart(2, "0");
+// https://css-tricks.com/snippets/javascript/lighten-darken-color/
+export function lightenDarkenColor(hex: HexString, amt: number) {
+  const col = hex.slice(1);
 
-  const darkenedColor: HexString = `#${r}${g}${b}`;
-  darkenMemo.set(hex, darkenedColor);
+  const num = parseInt(col, 16);
 
-  return darkenedColor;
-};
+  let r = (num >> 16) + amt;
 
-const lightenMemo = new Map<HexString, HexString>();
-export const lightenColor = (hex: HexString, amount: number): HexString => {
-  if (lightenMemo.has(hex)) {
-    return lightenMemo.get(hex)!;
-  }
-  const hexTail = hex.replace("#", "");
-  const r = Math.min(255, parseInt(hexTail.slice(0, 2), 16) + amount)
-    .toString(16)
-    .padStart(2, "0");
-  const g = Math.min(255, parseInt(hexTail.slice(2, 4), 16) + amount)
-    .toString(16)
-    .padStart(2, "0");
-  const b = Math.min(255, parseInt(hexTail.slice(4, 6), 16) + amount)
-    .toString(16)
-    .padStart(2, "0");
+  if (r > 255) r = 255;
+  else if (r < 0) r = 0;
 
-  const lightenedColor: HexString = `#${r}${g}${b}`;
+  let b = ((num >> 8) & 0x00ff) + amt;
 
-  lightenMemo.set(hex, lightenedColor);
+  if (b > 255) b = 255;
+  else if (b < 0) b = 0;
 
-  return lightenedColor;
-};
+  let g = (num & 0x0000ff) + amt;
+
+  if (g > 255) g = 255;
+  else if (g < 0) g = 0;
+
+  return "#" + (g | (b << 8) | (r << 16)).toString(16);
+}

@@ -31,7 +31,12 @@ export function usePlayersFirestore(): HookReturn {
         limit(15),
       ),
       (snapshot) => {
-        setPlayers(snapshot.docs.map((doc) => doc.data() as User));
+        setPlayers(
+          snapshot.docs.map((doc) => {
+            const { _searchIdx, ...rest } = doc.data();
+            return rest as User;
+          }),
+        );
       },
     );
     return () => unSub();

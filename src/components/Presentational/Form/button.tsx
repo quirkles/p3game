@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import {
   ColorName,
   HexString,
-  darkenColor,
+  lightenDarkenColor,
   getColor,
   getFontColor,
 } from "@/styles/colors";
@@ -79,7 +79,7 @@ export const Button = styled.button<ButtonColorProps>`
         backgroundColor = getColor("blue");
       }
 
-      return darkenColor(backgroundColor as `#${string}`, 40);
+      return lightenDarkenColor(backgroundColor as `#${string}`, -40);
     }};
   }
 
@@ -98,7 +98,7 @@ export const Button = styled.button<ButtonColorProps>`
         backgroundColor = getColor("blue");
       }
 
-      return darkenColor(backgroundColor as `#${string}`, 75);
+      return lightenDarkenColor(backgroundColor as `#${string}`, -75);
     }};
   }
 `;

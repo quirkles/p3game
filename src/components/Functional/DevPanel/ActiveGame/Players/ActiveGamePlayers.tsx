@@ -49,7 +49,13 @@ export function ActiveGamePlayers({ players }: ActiveGamePlayersProps) {
             {
               tabId: "existing",
               label: "Add Existing Player",
-              content: <ExistingPlayers />,
+              content: (
+                <ExistingPlayers
+                  onPlayerClick={(player) => {
+                    console.log("Clicked", player);
+                  }}
+                />
+              ),
             },
           ]}
         />
