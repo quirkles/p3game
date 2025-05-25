@@ -27,6 +27,15 @@ const StyledTabs = styled(FlexContainer)`
       border-bottom: 2px solid ${getColor("orange")};
     }
   }
+  .showing {
+    visibility: visible;
+    opacity: 1;
+  }
+  .hidden {
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+  }
 `;
 
 export function Tabs({ tabs, onTabChange }: TabsProps) {
@@ -53,9 +62,15 @@ export function Tabs({ tabs, onTabChange }: TabsProps) {
           ))}
         </FlexContainer>
       </FlexChild>
-      <FlexChild>
-        {tabs.find(({ tabId }) => tabId === selectedTabId)?.content || null}
-      </FlexChild>
+      {tabs.map(({ tabId, content }) => (
+        <FlexChild
+          key={tabId}
+          className={selectedTabId === tabId ? "showing" : "hidden"}
+        >
+          {content}
+        </FlexChild>
+      ))}
+      <FlexChild></FlexChild>
     </StyledTabs>
   );
 }

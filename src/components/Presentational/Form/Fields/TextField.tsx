@@ -20,14 +20,14 @@ const StyledTextField = styled(FlexContainer)`
 type InputProps<T extends FieldValues> = {
   label: Path<T>;
   register: UseFormRegister<T>;
-  required: boolean;
+  required?: boolean;
   error?: string;
 };
 
 export function TextField<T extends FieldValues>({
   label,
   register,
-  required,
+  required = false,
   error,
 }: InputProps<T>) {
   const inputId = nanoid();

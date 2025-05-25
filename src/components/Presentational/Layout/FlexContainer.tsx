@@ -34,8 +34,12 @@ export const FlexChild = styled.div<{
     | "baseline"
     | "stretch";
   $order?: number;
+  $grow?: number;
+  $shrink?: number;
 }>`
-  flex: ${({ $flex }) => $flex || "0 1 auto"};
+  flex-grow: ${({ $grow }) => $grow};
+  flex-shrink: ${({ $shrink }) => $shrink};
+  flex: ${({ $flex }) => $flex};
   align-self: ${({ $alignSelf }) => $alignSelf || "auto"};
   order: ${({ $order }) => $order || 0};
 `;

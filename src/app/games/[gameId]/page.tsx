@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { selectGame } from "@/store/selectors/games";
 import { Spinner } from "@/components/Presentational/Spinner";
 import { FlexContainer } from "@/components/Presentational/Layout/FlexContainer";
-import {Spacer} from "@/components/Presentational/Layout/Spacer";
+import { Spacer } from "@/components/Presentational/Layout/Spacer";
 
 export default function GamePage({
   params,

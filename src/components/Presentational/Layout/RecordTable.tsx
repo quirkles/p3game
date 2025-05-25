@@ -16,9 +16,7 @@ export function RecordTable<T extends Record<string, string | number>>(
   return (
     <GridContainer $columns={2}>
       <GridItem $xsCol={2}>
-        <Heading $level={3}>
-          Details
-        </Heading>
+        <Heading $level={3}>Details</Heading>
       </GridItem>
       {Object.entries(props.data)
         .sort((a, b) => {

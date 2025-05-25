@@ -6,15 +6,12 @@ import {
 } from "@/components/Presentational/Layout/FlexContainer";
 import { Input } from "@/components/Presentational/Form/input";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import {
-  saveUserThunk,
-  selectSessionUser,
-  setName,
-} from "@/store/slices/sessionUser";
+import { saveUserThunk, setName } from "@/store/slices/sessionUser";
 import { Heading } from "@/components/Presentational/Heading";
 import { Button } from "@/components/Presentational/Form/button";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { selectSessionUser } from "@/store/selectors/sessionuser";
 
 export default function UserInput() {
   const dispatch = useAppDispatch();
@@ -22,7 +19,7 @@ export default function UserInput() {
   const sessionUser = useAppSelector(selectSessionUser);
   useEffect(() => {
     if (sessionUser.id) {
-      router.push("/user/create");
+      router.push("/games");
     }
   }, [router, sessionUser.id]);
   return (
@@ -39,7 +36,7 @@ export default function UserInput() {
               dispatch(saveUserThunk({ name: sessionUser.name || "" }))
             }
           >
-            Go!
+            +
           </Button>
         </FlexContainer>
       </FlexChild>

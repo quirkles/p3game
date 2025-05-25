@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 import { selectActiveGame } from "@/store/selectors/games";
 import { FlexContainer } from "@/components/Presentational/Layout/FlexContainer";
 import { RecordTable } from "@/components/Presentational/Layout/RecordTable";
@@ -13,9 +13,10 @@ import { RootState } from "@/store/store";
 import { ActiveGamePlayers } from "@/components/Functional/DevPanel/ActiveGame/Players/ActiveGamePlayers";
 
 export function ActiveGame() {
-  const activeGame = useSelector(selectActiveGame);
-  const players = useSelector((root: RootState) =>
-    selectPlayersByIds(root, activeGame?.players || []),
+  const activeGame = useSelector(selectActiveGame, shallowEqual);
+  const players = useSelector(
+    (root: RootState) => selectPlayersByIds(root, activeGame?.players || []),
+    shallowEqual,
   );
 
   if (!activeGame || !isFetchedStoreGame(activeGame)) return null;

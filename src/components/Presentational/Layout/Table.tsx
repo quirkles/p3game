@@ -5,5 +5,9 @@ interface TableProps<T extends Record<string, string | number>> {
 export function Table<T extends Record<string, string | number>>(
   props: TableProps<T>,
 ) {
-  return <div>Table</div>;
+  return (
+    <div>
+      Table <code>{JSON.stringify(props)}</code>
+    </div>
+  );
 }
