@@ -4,8 +4,8 @@ import { getColor } from "@/styles/colors";
 export const Input = styled.input<{
   $hasError?: boolean;
 }>`
-  padding: 12px 16px;
-  font-size: 14px;
+  padding: 6px 8px;
+  font-size: 12px;
   background-color: ${getColor("white")};
   color: ${getColor("black")};
   border: none;

@@ -8,21 +8,24 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { TextField } from "@/components/Presentational/Form/Fields/TextField";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePlayersFirestore } from "@/hooks/usePlayersFirestore";
 import { List } from "@/components/Presentational/List/List";
 import { P } from "@/components/Presentational/Typography/P";
+import { Button } from "@/components/Presentational/Form/button";
 
 interface ExistingPlayersProps {
-  onPlayerClick?: (player: User) => void;
+  handleAdd?: (players: User[]) => void;
 }
 
 const StyledExistingPlayers = styled(FlexContainer)`
   width: 100%;
 `;
 
-export function ExistingPlayers({ onPlayerClick }: ExistingPlayersProps) {
+export function ExistingPlayers({ handleAdd }: ExistingPlayersProps) {
   const { players, setQuery } = usePlayersFirestore();
+
+  const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>([]);
 
   const { register, watch } = useForm({
     resolver: zodResolver(
@@ -31,6 +34,7 @@ export function ExistingPlayers({ onPlayerClick }: ExistingPlayersProps) {
       }),
     ),
   });
+
   const query = watch("query");
 
   useEffect(() => {
@@ -44,20 +48,26 @@ export function ExistingPlayers({ onPlayerClick }: ExistingPlayersProps) {
       <FlexChild>
         {players.length > 0 ? (
           <List
-            onClick={(key) => {
-              const player = players.find((p) => p.id === key);
-              if (player && onPlayerClick) {
-                onPlayerClick(player);
-              }
+            areItemsSelectable={true}
+            onItemClick={(playerId, isSelected) => {
+              setSelectedPlayerIds(
+                isSelected
+                  ? [...selectedPlayerIds, playerId]
+                  : selectedPlayerIds.filter((id) => id !== playerId),
+              );
             }}
             items={players.map((p) => ({
               display: p.name,
               key: p.id,
+              isSelected: selectedPlayerIds.includes(p.id),
             }))}
           />
         ) : (
           <P>{query?.length ? "No Players Found." : "Search for players."}</P>
         )}
+      </FlexChild>
+      <FlexChild>
+        <Button disabled={selectedPlayerIds.length === 0} variant="success">Add +</Button>
       </FlexChild>
     </StyledExistingPlayers>
   );

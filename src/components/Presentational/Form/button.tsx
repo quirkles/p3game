@@ -9,6 +9,7 @@ import {
 
 // Create a type that ensures only one of the props is provided (not both)
 type ButtonColorProps = {
+  disabled?: boolean;
   $size?: "small" | "medium" | "large";
 } & (
   | { color: ColorName; variant?: never }
@@ -17,13 +18,13 @@ type ButtonColorProps = {
 ); // Allow both to be omitted for default
 
 export const Button = styled.button<ButtonColorProps>`
-  ${({ color, variant }) => {
+  ${({ color, variant, disabled }) => {
     // Use color if provided, otherwise use variant, default to blue
     const colorName = color || variant || "blue";
     let backgroundColor: HexString;
 
     try {
-      backgroundColor = getColor(colorName);
+      backgroundColor = disabled ? getColor("grey2") : getColor(colorName);
     } catch (e) {
       console.warn(`Invalid color name: ${colorName}. Using default blue.`, e);
       backgroundColor = getColor("blue");
@@ -34,6 +35,19 @@ export const Button = styled.button<ButtonColorProps>`
     return css`
       background-color: ${backgroundColor};
       color: ${textColor};
+      &:hover {
+        background-color: ${lightenDarkenColor(
+          backgroundColor as `#${string}`,
+          -40,
+        )};
+      }
+
+      &:active {
+        background-color: ${lightenDarkenColor(
+          backgroundColor as `#${string}`,
+          -40,
+        )};
+      }
     `;
   }}
 
@@ -63,42 +77,4 @@ export const Button = styled.button<ButtonColorProps>`
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: ${({ color, variant }) => {
-      const colorName = color || variant || "blue";
-      let backgroundColor: string;
-
-      try {
-        backgroundColor = getColor(colorName);
-      } catch (e) {
-        console.error(
-          `Invalid color name: ${colorName}. Using default blue.`,
-          e,
-        );
-        backgroundColor = getColor("blue");
-      }
-
-      return lightenDarkenColor(backgroundColor as `#${string}`, -40);
-    }};
-  }
-
-  &:active {
-    background-color: ${({ color, variant }) => {
-      const colorName = color || variant || "blue";
-      let backgroundColor: string;
-
-      try {
-        backgroundColor = getColor(colorName);
-      } catch (e) {
-        console.error(
-          "invalid color name: ${colorName}. Using default blue.",
-          e,
-        );
-        backgroundColor = getColor("blue");
-      }
-
-      return lightenDarkenColor(backgroundColor as `#${string}`, -75);
-    }};
-  }
 `;
