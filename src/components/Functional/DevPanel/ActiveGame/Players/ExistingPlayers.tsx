@@ -13,6 +13,7 @@ import { usePlayersFirestore } from "@/hooks/usePlayersFirestore";
 import { List } from "@/components/Presentational/List/List";
 import { P } from "@/components/Presentational/Typography/P";
 import { Button } from "@/components/Presentational/Form/button";
+import { noop } from "@/utils/func";
 
 interface ExistingPlayersProps {
   handleAdd?: (players: User[]) => void;
@@ -67,7 +68,30 @@ export function ExistingPlayers({ handleAdd }: ExistingPlayersProps) {
         )}
       </FlexChild>
       <FlexChild>
-        <Button disabled={selectedPlayerIds.length === 0} variant="success">Add +</Button>
+        <Button
+          disabled={selectedPlayerIds.length === 0}
+          variant="success"
+          onClick={() =>
+            handleAdd
+              ? handleAdd(
+                  selectedPlayerIds.reduce((selectedPlayers: User[], pid) => {
+                    console.log({
+                      players,
+                      pid,
+                      selectedPlayerIds,
+                    });
+                    const player = players.find((p) => p.id === pid);
+                    if (player) {
+                      selectedPlayers.push(player);
+                    }
+                    return selectedPlayers;
+                  }, []),
+                )
+              : noop()
+          }
+        >
+          Add +
+        </Button>
       </FlexChild>
     </StyledExistingPlayers>
   );
