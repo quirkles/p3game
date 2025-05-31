@@ -11,15 +11,29 @@ import {
 import { selectPlayersByIds } from "@/store/selectors/players";
 import { RootState } from "@/store/store";
 import { ActiveGamePlayers } from "@/components/Functional/DevPanel/ActiveGame/Players/ActiveGamePlayers";
+import { selectSessionUserId } from "@/store/selectors/sessionuser";
+import { useGameConnection } from "@/hooks/useGameConnection";
 
 export function ActiveGame() {
-  const activeGame = useSelector(selectActiveGame, shallowEqual);
+  const activeGame = useSelector(selectActiveGame);
   const players = useSelector(
     (root: RootState) => selectPlayersByIds(root, activeGame?.players || []),
     shallowEqual,
   );
+  const sessionUserId = useSelector(selectSessionUserId);
 
-  if (!activeGame || !isFetchedStoreGame(activeGame)) return null;
+  const gameConnection = useGameConnection(
+    sessionUserId,
+    activeGame?.id || null,
+  );
+
+  if (!activeGame || !isFetchedStoreGame(activeGame) || !sessionUserId) {
+    return null;
+  }
+
+  const handleAddPlayers = (playerIds: string[]) => {
+    console.log("Adding", playerIds);
+  };
 
   return (
     <FlexContainer $flexDirection="column" $gap="1rem">
@@ -35,7 +49,10 @@ export function ActiveGame() {
           />
         </GridItem>
         <GridItem $xsCol={6} $smCol={4}>
-          <ActiveGamePlayers players={players} />
+          <ActiveGamePlayers
+            players={players}
+            onPlayersAdded={handleAddPlayers}
+          />
         </GridItem>
       </GridContainer>
     </FlexContainer>

@@ -11,10 +11,15 @@ import { ExistingPlayers } from "@/components/Functional/DevPanel/ActiveGame/Pla
 
 interface ActiveGamePlayersProps {
   players: StorePlayer[];
+  onPlayersAdded: (playerIds: string[]) => void;
 }
 
-export function ActiveGamePlayers({ players }: ActiveGamePlayersProps) {
+export function ActiveGamePlayers({
+  players,
+  onPlayersAdded,
+}: ActiveGamePlayersProps) {
   const [isShowingAddPlayerModal, setIsShowingAddPlayerModal] = useState(false);
+
   return (
     <FlexContainer $flexDirection="column">
       <Heading $level={3}>
@@ -52,7 +57,7 @@ export function ActiveGamePlayers({ players }: ActiveGamePlayersProps) {
               content: (
                 <ExistingPlayers
                   handleAdd={(players) => {
-                    console.log("adding players", { players });
+                    onPlayersAdded(players.map((p) => p.id));
                   }}
                 />
               ),

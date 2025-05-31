@@ -23,12 +23,12 @@ const StyledExistingPlayers = styled(FlexContainer)`
   width: 100%;
 `;
 
-export function ExistingPlayers({ handleAdd }: ExistingPlayersProps) {
+export function ExistingPlayers({ handleAdd = noop }: ExistingPlayersProps) {
   const { players, setQuery } = usePlayersFirestore();
 
   const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>([]);
 
-  const { register, watch } = useForm({
+  const { register, watch, setValue } = useForm({
     resolver: zodResolver(
       z.object({
         query: z.string(),
@@ -41,6 +41,19 @@ export function ExistingPlayers({ handleAdd }: ExistingPlayersProps) {
   useEffect(() => {
     setQuery(query);
   }, [query, setQuery]);
+
+  const onAddPlayerClick = () => {
+    handleAdd(
+      selectedPlayerIds.reduce((selectedPlayers: User[], pid) => {
+        const player = players.find((p) => p.id === pid);
+        if (player) {
+          selectedPlayers.push(player);
+        }
+        return selectedPlayers;
+      }, []),
+    );
+    setValue("query", "");
+  };
   return (
     <StyledExistingPlayers $flexDirection="column" $gap="1rem">
       <FlexChild>
@@ -70,25 +83,8 @@ export function ExistingPlayers({ handleAdd }: ExistingPlayersProps) {
       <FlexChild>
         <Button
           disabled={selectedPlayerIds.length === 0}
-          variant="success"
-          onClick={() =>
-            handleAdd
-              ? handleAdd(
-                  selectedPlayerIds.reduce((selectedPlayers: User[], pid) => {
-                    console.log({
-                      players,
-                      pid,
-                      selectedPlayerIds,
-                    });
-                    const player = players.find((p) => p.id === pid);
-                    if (player) {
-                      selectedPlayers.push(player);
-                    }
-                    return selectedPlayers;
-                  }, []),
-                )
-              : noop()
-          }
+          $variant="success"
+          onClick={onAddPlayerClick}
         >
           Add +
         </Button>

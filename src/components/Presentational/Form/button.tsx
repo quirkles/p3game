@@ -12,15 +12,15 @@ type ButtonColorProps = {
   disabled?: boolean;
   $size?: "small" | "medium" | "large";
 } & (
-  | { color: ColorName; variant?: never }
-  | { color?: never; variant: ColorName }
-  | { color?: never; variant?: never }
+  | { color: ColorName; $variant?: never }
+  | { color?: never; $variant: ColorName }
+  | { color?: never; $variant?: never }
 ); // Allow both to be omitted for default
 
 export const Button = styled.button<ButtonColorProps>`
-  ${({ color, variant, disabled }) => {
+  ${({ color, $variant, disabled }) => {
     // Use color if provided, otherwise use variant, default to blue
-    const colorName = color || variant || "blue";
+    const colorName = color || $variant || "blue";
     let backgroundColor: HexString;
 
     try {
