@@ -12,7 +12,7 @@ import { selectPlayersByIds } from "@/store/selectors/players";
 import { RootState } from "@/store/store";
 import { ActiveGamePlayers } from "@/components/Functional/DevPanel/ActiveGame/Players/ActiveGamePlayers";
 import { selectSessionUserId } from "@/store/selectors/sessionuser";
-import { useGameConnection } from "@/hooks/useGameConnection";
+import { useDevGameConnection } from "@/hooks/useDevGameConnection";
 
 export function ActiveGame() {
   const activeGame = useSelector(selectActiveGame);
@@ -22,7 +22,7 @@ export function ActiveGame() {
   );
   const sessionUserId = useSelector(selectSessionUserId);
 
-  const gameConnection = useGameConnection(
+  const { gameConnection, state } = useDevGameConnection(
     sessionUserId,
     activeGame?.id || null,
   );
@@ -32,12 +32,12 @@ export function ActiveGame() {
   }
 
   const handleAddPlayers = (playerIds: string[]) => {
-    console.log("Adding", playerIds);
+    gameConnection?.addMultiplePlayers(playerIds);
   };
 
   return (
     <FlexContainer $flexDirection="column" $gap="1rem">
-      <Heading $level={2}>Active Game</Heading>
+      <Heading $level={2}>Active Game: {state}</Heading>
       <GridContainer $columns={6} $gap="large">
         <GridItem $xsCol={6} $smCol={2}>
           <RecordTable

@@ -1,7 +1,7 @@
 import { EventEmitter, type EventHandlerArgsMap } from "@/utils/EventEmitter";
 import { Game } from "@/types/Game";
 
-interface GameEvents extends EventHandlerArgsMap {
+export interface GameEvents extends EventHandlerArgsMap {
   connected: void;
   disconnected: void;
   initGameData: Game;
@@ -26,7 +26,7 @@ const isEventType = (event: unknown): event is GameEvent => {
 };
 
 export class GameSubscription extends EventEmitter<GameEvents> {
-  private webSocket: WebSocket | null = null;
+  protected webSocket: WebSocket | null = null;
 
   constructor(gameId: string, connectionToken: string) {
     super();

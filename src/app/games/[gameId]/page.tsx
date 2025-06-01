@@ -7,6 +7,7 @@ import { selectGame } from "@/store/selectors/games";
 import { Spinner } from "@/components/Presentational/Spinner";
 import { FlexContainer } from "@/components/Presentational/Layout/FlexContainer";
 import { Spacer } from "@/components/Presentational/Layout/Spacer";
+import { Button } from "@/components/Presentational/Form/button";
 
 export default function GamePage({
   params,
@@ -14,7 +15,7 @@ export default function GamePage({
   params: Promise<{ gameId: string }>;
 }) {
   const { gameId } = use(params);
-  const { state, gameSubscription } = useGame(gameId);
+  const { state, gameSubscription, reconnect } = useGame(gameId);
   const game = useSelector(selectGame(gameId));
   useEffect(() => {
     if (gameSubscription) {
@@ -46,11 +47,17 @@ export default function GamePage({
       </FlexContainer>
     );
   }
+  if (state === "DISCONNECTED")
+    return (
+      <div className="game-page">
+        <h1>Game disconnected</h1>
+        <Button onClick={reconnect}>Reconnect</Button>
+      </div>
+    );
   return (
     <div className="game-page">
       <h1></h1>
       <h2>State: {state}</h2>
-      {/* Add game-specific content here */}
     </div>
   );
 }

@@ -19,12 +19,18 @@ import { getConfig } from "@/config";
 interface UseGameHookReturns {
   state: "ESTABLISHING_CONNECTION" | "CONNECTED" | "DISCONNECTED" | "ERROR";
   gameSubscription: GameSubscription | null;
+  reconnect: () => void;
 }
 
 export function useGame(
   gameId: string,
   userIdOverride?: string,
 ): UseGameHookReturns {
+  const [isReconnecting, setIsReconnecting] = useState(false);
+  const [connectionState, setConnectionState] = useState<
+    "ESTABLISHING_CONNECTION" | "CONNECTED" | "DISCONNECTED" | "ERROR"
+  >("ESTABLISHING_CONNECTION");
+
   const hookTicks = useRef(0);
   const sessionUser = useAppSelector(selectSessionUser);
 
@@ -32,33 +38,24 @@ export function useGame(
 
   const playersToFetch = useSelector(selectPlayersToFetch);
 
-  const [connectionState, setConnectionState] = useState<
-    "ESTABLISHING_CONNECTION" | "CONNECTED" | "DISCONNECTED" | "ERROR"
-  >("ESTABLISHING_CONNECTION");
-
   const gameSubscription = useRef<GameSubscription>(null);
 
   const userId =
     (getConfig().ENV === "local" && userIdOverride) || sessionUser.id;
 
   useEffect(() => {
-    hookTicks.current++;
-    if (hookTicks.current > 5) {
-      return;
-    }
-    if (playersToFetch.length > 0) {
-      appDispatch(fetchMany(playersToFetch));
-    }
-  }, [appDispatch, playersToFetch, playersToFetch.length]);
-
-  useEffect(() => {
     if (!userId || !gameId) {
       return;
     }
+    if (gameSubscription.current && !isReconnecting) {
+      return;
+    }
+    setConnectionState("ESTABLISHING_CONNECTION");
     let sub: GameSubscription | null = null;
     fetch(`http://localhost:8080/getToken?userId=${userId}`)
       .then((resp) => resp.json())
       .then(({ token }) => {
+        setIsReconnecting(false);
         sub = getGameSubscription(gameId, token);
         if (gameSubscription.current) {
           gameSubscription.current.unsubscribe();
@@ -69,8 +66,8 @@ export function useGame(
           appDispatch(setActiveGameConnection(gameId));
         });
         sub.on("disconnected", () => {
-          unsetActiveGameConnection(gameId);
           setConnectionState("DISCONNECTED");
+          appDispatch(unsetActiveGameConnection(gameId));
         });
         sub.on("initGameData", (game) => {
           appDispatch(setGame(game));
@@ -99,10 +96,13 @@ export function useGame(
     return () => {
       sub?.unsubscribe();
     };
-  }, [userId, gameId, appDispatch]);
+  }, [userId, gameId, isReconnecting, appDispatch]);
 
   return {
     state: connectionState,
     gameSubscription: gameSubscription.current,
+    reconnect: () => {
+      setIsReconnecting(true);
+    },
   };
 }
